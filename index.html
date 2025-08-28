@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Portfolio Software Engineer</title>
+    <title>Ferdinand Vincent L. Tabora - Professional Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -12,6 +12,10 @@
             --light: #ecf0f1;
             --dark: #1a252f;
             --accent: #e74c3c;
+            --text-dark: #333;
+            --text-light: #777;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
         }
         
         * {
@@ -23,8 +27,9 @@
         
         body {
             background-color: #f8f9fa;
-            color: #333;
+            color: var(--text-dark);
             line-height: 1.6;
+            overflow-x: hidden;
         }
         
         .container {
@@ -41,7 +46,8 @@
             width: 100%;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
         }
         
         .nav-container {
@@ -56,11 +62,14 @@
             font-weight: 700;
             color: white;
             text-decoration: none;
+            display: flex;
+            align-items: center;
         }
         
         .nav-links {
             display: flex;
             list-style: none;
+            transition: var(--transition);
         }
         
         .nav-links li {
@@ -71,30 +80,94 @@
             color: white;
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--secondary);
+            transition: var(--transition);
         }
         
         .nav-links a:hover {
             color: var(--secondary);
         }
         
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+        
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            outline: none;
+        }
+        
+        .hamburger .line {
+            display: block;
+            width: 30px;
+            height: 3px;
+            background-color: white;
+            margin: 6px 0;
+            transition: var(--transition);
+        }
+        
         /* Hero Section */
         .hero {
             background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
             color: white;
-            padding: 8rem 0 4rem;
+            padding: 10rem 0 6rem;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='0.1' d='M0,128L48,117.3C96,107,192,85,288,112C384,139,480,213,576,218.7C672,224,768,160,864,138.7C960,117,1056,139,1152,149.3C1248,160,1344,160,1392,160L1440,160L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
         }
         
         .hero h1 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 1rem;
+            animation: fadeInDown 1s ease;
         }
         
         .hero p {
             font-size: 1.2rem;
-            max-width: 700px;
             margin: 0 auto 2rem;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .hero-tagline {
+            font-size: 1.5em;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            font-weight: 600;
         }
         
         .contact-info {
@@ -102,28 +175,60 @@
             justify-content: center;
             gap: 2rem;
             margin-top: 1.5rem;
+            animation: fadeIn 1.5s ease;
         }
         
         .contact-info a {
             color: white;
             text-decoration: none;
-            transition: color 0.3s;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            transition: var(--transition);
         }
         
         .contact-info a:hover {
             color: var(--secondary);
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
         }
         
         /* Sections */
         section {
-            padding: 4rem 0;
+            padding: 5rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         section h2 {
             text-align: center;
             margin-bottom: 3rem;
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             color: var(--primary);
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        section h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
         }
         
         /* Accomplishments */
@@ -137,17 +242,87 @@
             padding: 1.5rem;
             margin-bottom: 1.5rem;
             border-radius: 0 4px 4px 0;
+            transition: var(--transition);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .accomplishment-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         
         .accomplishment-item h3 {
             color: var(--primary);
             margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .accomplishment-item h3 i {
+            color: var(--secondary);
         }
         
         .accomplishment-item .date {
-            color: #7f8c8d;
+            color: var(--text-light);
             font-size: 0.9rem;
             margin-bottom: 0.5rem;
+            font-style: italic;
+        }
+        
+        /* Skills Section */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .skill-category {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .skill-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .skill-category h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .skill-category ul {
+            list-style: none;
+        }
+        
+        .skill-category li {
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed #eee;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .skill-category li:before {
+            content: '•';
+            color: var(--secondary);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+        }
+        
+        .skill-category li:last-child {
+            border-bottom: none;
         }
         
         /* GitHub Section */
@@ -163,10 +338,13 @@
         
         .repo-card {
             background-color: white;
-            border-radius: 6px;
+            border-radius: 8px;
             padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
         
         .repo-card:hover {
@@ -180,24 +358,63 @@
         }
         
         .repo-card p {
-            color: #7f8c8d;
+            color: var(--text-light);
             margin-bottom: 1rem;
             font-size: 0.9rem;
+            flex-grow: 1;
         }
         
         .repo-stats {
             display: flex;
             gap: 1rem;
             font-size: 0.8rem;
-            color: #7f8c8d;
+            color: var(--text-light);
         }
         
         .repo-link {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             margin-top: 1rem;
             color: var(--secondary);
             text-decoration: none;
             font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .repo-link:hover {
+            gap: 0.8rem;
+        }
+        
+        /* Contact Section */
+        #contact {
+            background: white;
+        }
+        
+        .contact-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .contact-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: var(--secondary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            margin-top: 2rem;
+        }
+        
+        .contact-button:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
         /* Footer */
@@ -205,7 +422,7 @@
             background-color: var(--dark);
             color: white;
             text-align: center;
-            padding: 2rem 0;
+            padding: 3rem 0;
         }
         
         .footer-content {
@@ -217,41 +434,146 @@
         .social-links {
             display: flex;
             gap: 1.5rem;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
         }
         
         .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
             color: white;
-            font-size: 1.2rem;
-            transition: color 0.3s;
+            border-radius: 50%;
+            transition: var(--transition);
         }
         
         .social-links a:hover {
-            color: var(--secondary);
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .skills-container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+        
         @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: column;
+            .hamburger {
+                display: block;
+                z-index: 1001;
+            }
+            
+            .hamburger.active .line:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+            
+            .hamburger.active .line:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .hamburger.active .line:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
             }
             
             .nav-links {
-                margin-top: 1rem;
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: var(--primary);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: var(--transition);
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-links.active {
+                right: 0;
             }
             
             .nav-links li {
-                margin-left: 1rem;
-                margin-right: 1rem;
+                margin: 1.5rem 0;
+            }
+            
+            .hero {
+                padding: 8rem 0 4rem;
             }
             
             .hero h1 {
                 font-size: 2.2rem;
             }
             
+            .hero-tagline {
+                font-size: 1.2rem;
+            }
+            
             .contact-info {
                 flex-direction: column;
-                gap: 0.5rem;
+                gap: 1rem;
+            }
+            
+            section h2 {
+                font-size: 2rem;
+            }
+            
+            .repos-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .skills-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 0 15px;
             }
         }
     </style>
@@ -260,31 +582,37 @@
     <!-- Navigation -->
     <nav>
         <div class="container nav-container">
-            <a href="#" class="logo">Professional Portfolio</a>
+            <a href="#" class="logo">Portfolio</a>
+            <button class="hamburger">
+                <span class="line"></span>
+                <span class="line"></span>
+                <span class="line"></span>
+            </button>
             <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#accomplishments">Accomplishments</a></li>
-                <li><a href="#technical">Technical Skills</a></li>
-                <li><a href="#github">GitHub</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#about"><i class="fas fa-user"></i> About</a></li>
+                <li><a href="#accomplishments"><i class="fas fa-trophy"></i> Accomplishments</a></li>
+                <li><a href="#technical"><i class="fas fa-laptop-code"></i> Skills</a></li>
+                <li><a href="#github"><i class="fab fa-github"></i> GitHub</a></li>
+                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
             </ul>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section class="hero" id="about">
-        <div class="container">
-            <h1>Ferdinand Vincent L. Tabora</h1>
-            <p style="font-size: 1.5em;">Software Engineer, Blockchain Developer, Technical Writer</p>
+        <div class="container hero-content">
+            <h1>Ferdinand Vincent Tabora</h1>
+            <p class="hero-tagline">Software Engineer, Blockchain Developer, Technical Writer</p>
             <p>Certified Blockchain Expert, Certified Hyperledger Developer, UNIC Blockchain Certified, IT Professional (Microsoft Windows), Cisco CCNA</p>
             <p>"Innovative thinker and problem solver"</p>
             <p>
-                Dynamic with strong technical background and interpersonal communications skills. Takes pride in working to achieve goals. Has experience working in a large corporate environment in a team setting. Motivated, enthusiastic, reliable and willing to go the extra mile to accomplish the objectives.
+                Dynamic with strong technical background and interpersonal communications skills. Prioritizes in working to achieve goals. Has experience working in a large corporate environment in a team setting. Motivated, enthusiastic, reliable and willing to go the extra mile to accomplish the objectives.
             </p>
             
-                
             <div class="contact-info">
                 <a href="https://www.linkedin.com/in/vtechtabora/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                <a href="mailto:vincent.tabora@gmail.com"><i class="fas fa-envelope"></i> Email</a>
+                <a href="#contact"><i class="fas fa-paper-plane"></i> Get in Touch</a>
             </div>
         </div>
     </section>
@@ -295,7 +623,7 @@
             <h2>Professional Accomplishments</h2>
             
             <div class="accomplishment-item">
-                <h3>Software Engineer</h3>
+                <h3><i class="fas fa-code"></i> Software Engineer</h3>
                 <p class="date">2019 - Present</p>
                 <p><b>VirtualTryOn Project (November 2024 to March 2025)</b> - Developer and technical consultant for an AI software tool aimed for virtual try on. Work with ML engineers to create an app that allows users to use their mobile phones to take photos of clothes and create images of the user in the clothing virtually. Developed using Gemini 2.0 API, 
                 Python (backend), and JavaScript React (frontend).</p>
@@ -312,8 +640,10 @@
             </div>
             
             <div class="accomplishment-item">
-                <h3>Technical Writer</h3>
+                <h3><i class="fas fa-pen-fancy"></i> Technical Writer</h3>
                 <p class="date">Since 2017</p>
+                 <p><b>D365 Global (June 2025 - Present)</b> - Technical writer for Learn D365 Document Portal. Convert documents from rich text to markdown format. Write technical documents for education and reference in Microsoft Dynamics 365 for customers. </p>
+                 <br>
                 <p><b>GoSumo (January 2022 - January 2024)</b> - Technical writer for documentation, white paper, and articles and researcher for technology development. Web3 gaming app and platform for blockchain-based game development. Built on top of the Polygon blockchain and supports the use of stablecoin USDC. </p>
                 <br>
                 <p><b>FastID (December 2019 - August 2020)</b> - Blockchain architect for a concept permissioned blockchain implementing a digital identity app that can be used for payments and verifi cation. Generates digital ID based on personal information that can be used for online data verifi cation that uses PKI. Design the processes and prepare technical information for documentation purposes. </p>
@@ -327,12 +657,13 @@
                     <li>Trusterras Authenticity Platform White Paper</li>
                     <li>Unbound Finance White Paper</li>
                 </ul></p>
-                
-        </div>
+            </div>
             
             <div class="accomplishment-item">
-                <h3>IT Engineer</h3>
+                <h3><i class="fas fa-server"></i> IT Engineer</h3>
                 <p class="date">Since 2000</p>
+                <p><b>Independent Contractor (2015 - 2018)</b> Freelance IT and systems integration specialist, providing service in setup, configuration and troubleshooting information systems. Focus on LAN/WAN integration, cybersecurity for IoT devices (e.g. web cameras, sensors, etc.), cloud networks (e.q. AWS EC2, Area 53, Load Balancers), and technical support. </p>
+                <br>
                 <p><b>Futureware (2012 - 2015)</b> Software technical support with a specialized document management system using OnBase for health and medical records. Implement and upgrade client software and assist users with technical issues.</p>
                 <br>
                 <p><b>Anchen Pharmaceuticals (2007 - 2010)</b> - Network Engineer for a pharmaceutical company. Involved in all aspects of corporate network data center planning, design and implementation. Systems administrator of IT equipment and servers. Research latest innovations to improve company information systems. Perform technical documentation for maintaining company standards and FDA regulations.</p>
@@ -343,185 +674,190 @@
                 <br>
                 <p><b>Trendmicro (2000 - 2003)</b> - Systems Engineer specializing in antivirus and cybersecurity products for defending corporate networks and information systems. Later became part of the company’s first NOC operations as Network Engineer.</p>
             </div>
-            
         </div>
     </section>
 
-
     <!-- Technical Skills Section -->
-      <section class="hero" id="technical">
+    <section class="technical" id="technical">
         <div class="container">
-            <h2 style="color: white;">Technical Skills</h2>
-            <p style="font-size: 1.2em; color: white;">Proficient in a wide range of technologies and programming languages</p>
+            <h2>Technical Skills</h2>
+            <p style="text-align: center; margin-bottom: 2rem;">Proficient in a wide range of technologies and programming languages</p>
         
-            <div>
-                <h3 style="text-align: justify;">Data Communications/Networking</h3>
-                <ul style="list-style-position: inside; padding-left: 0; text-align: justify;">
-                    <li>Routers</li>
-                    <li>Firewalls</li>
-                    <li>Switches</li>
-                </ul>
+            <div class="skills-container">
+                <div class="skill-category">
+                    <h3><i class="fas fa-network-wired"></i> Data Communications/Networking</h3>
+                    <ul>
+                        <li>Routers</li>
+                        <li>Firewalls</li>
+                        <li>Switches</li>
+                    </ul>
+                </div>
+
+                <div class="skill-category">
+                    <h3><i class="fas fa-link"></i> Blockchain</h3>
+                    <ul>
+                        <li>Smart Contracts</li>
+                        <li>Cryptography</li>
+                        <li>Consensus Mechanisms</li>
+                        <li>Web3</li>
+                        <li>Layer 1/Layer 2/Layer 0</li>
+                        <li>Sidechain</li>
+                        <li>Rollups</li>
+                        <li>ERC20, ERC721, ERC1155, ERC4337</li>
+                    </ul>
+                </div>
+
+                <div class="skill-category">
+                    <h3><i class="fas fa-pen"></i> Technical Writing</h3>
+                    <ul>
+                        <li>Documentation</li>
+                        <li>White paper</li>
+                        <li>Yellow paper</li>
+                        <li>Articles</li>
+                        <li>Blogs (e.g., WordPress)</li>
+                        <li>Pitch decks</li>
+                        <li>Infographics</li>
+                    </ul>
+                </div>
+            
+
+                <div class="skill-category">
+                    <h3><i class="fas fa-cogs"></i> Systems Administration</h3>
+                    <ul>
+                        <li>Windows Server</li>
+                        <li>Linux (Ubuntu, Amazon, Kali, Red Hat)</li>
+                        <li>macOS</li>
+                        <li>Windows</li>
+                    </ul>
+                </div>
+
+                <div class="skill-category">
+                    <h3><i class="fas fa-tasks"></i> Productivity</h3>
+                    <ul>
+                        <li>Microsoft 365</li>
+                        <li>Google Docs</li>
+                        <li>Adobe Acrobat/CC</li>
+                        <li>Zapier</li>
+                        <li>ChatGPT, Gemini, CoPilot, DeepSeek, Grok</li>
+                    </ul>
+                </div>
+
+                <div class="skill-category">
+                    <h3><i class="fas fa-code"></i> Programming</h3>
+                    <ul>
+                        <li>Solidity</li>
+                        <li>JavaScript</li>
+                        <li>JSON</li>
+                        <li>Python</li>
+                        <li>C/C++</li>
+                        <li>HTML</li>
+                        <li>CSS</li>
+                        <li>MD/MDX</li>
+                    </ul>
+                </div>
+
+                <div class="skill-category">
+                    <h3><i class="fas fa-shield-alt"></i> Cybersecurity</h3>
+                    <ul>
+                        <li>Antivirus</li>
+                        <li>IPS/IDS</li>
+                        <li>PKI</li>
+                        <li>TLS/SSL</li>
+                        <li>Patching</li>
+                        <li>Monitoring</li>
+                        <li>Pentesting</li>
+                        <li>Security Policies</li>
+                        <li>Access Tokens</li>
+                    </ul>
+                </div>
+
+                <div class="skill-category">
+                    <h3><i class="fas fa-chart-line"></i> Data Science</h3>
+                    <ul>
+                        <li>Machine Learning</li>
+                        <li>LLM</li>
+                        <li>Deep Learning</li>
+                        <li>Computer Vision</li>
+                        <li>NLP</li>
+                        <li>Data Visualization</li>
+                    </ul>
+                </div>
+
+                <div class="skill-category">
+                    <h3><i class="fas fa-laptop-code"></i> Development</h3>
+                    <ul>
+                        <li>React</li>
+                        <li>NodeJS</li>
+                        <li>Express</li>
+                        <li>Foundry</li>
+                        <li>Hardhat</li>
+                        <li>Chainlink</li>
+                        <li>Truffle</li>
+                        <li>Vite</li>
+                        <li>Bootstrap</li>
+                        <li>Tailwind</li>
+                        <li>Ethers.js</li>
+                        <li>Web3.js</li>
+                        <li>Git</li>
+                        <li>Remix</li>
+                        <li>Visual Studio Code</li>
+                    </ul>
+                </div>
+
+                <div class="skill-category">
+                    <h3><i class="fas fa-vial"></i> Testing</h3>
+                    <ul>
+                        <li>Postman</li>
+                        <li>Thunder</li>
+                        <li>CodeRunner</li>
+                        <li>Chai</li>
+                        <li>Waffle</li>
+                        <li>Mocha</li>
+                        <li>Jenkins</li>
+                    </ul>
+                </div>
+
+                <div class="skill-category">
+                    <h3><i class="fas fa-users"></i> Collaboration</h3>
+                    <ul>
+                        <li>Slack</li>
+                        <li>Confluence</li>
+                        <li>Jira</li>
+                        <li>Zoom</li>
+                        <li>Telegram</li>
+                        <li>WhatsApp</li>
+                        <li>Teams</li>
+                        <li>Workspace</li>
+                    </ul>
+                </div>
+
+                <div class="skill-category">
+                    <h3><i class="fas fa-database"></i> Database</h3>
+                    <ul>
+                        <li>MongoDB</li>
+                        <li>MySQL</li>
+                        <li>SQL Server</li>
+                    </ul>
+                </div>
+
+                <div class="skill-category">
+                    <h3><i class="fas fa-cloud"></i> DevOps</h3>
+                    <ul>
+                        <li>IPFS</li>
+                        <li>Render</li>
+                        <li>AWS</li>
+                        <li>GCP</li>
+                        <li>Azure</li>
+                        <li>Docker</li>
+                        <li>BitBucket</li>
+                        <li>GitHub</li>
+                    </ul>
+                </div>
+
+                
             </div>
-
-            <div>
-                <h3 style="text-align: justify;">Systems Administration</h3>
-                <ul style="list-style-position: inside; padding-left: 0; text-align: justify;">
-                    <li>Windows Server</li>
-                    <li>Linux (Ubuntu, Amazon, Kali, Red Hat)</li>
-                    <li>macOS</li>
-                    <li>Windows</li>
-                </ul>
-            </div>
-
-            <div>
-            <h3 style="text-align: justify;">Productivity</h3>
-            <ul style="list-style-position: inside; padding-left: 0; text-align: justify;">
-                <li>Microsoft 365</li>
-                <li>Google Docs</li>
-                <li>Adobe Acrobat/CC</li>
-                <li>Zapier</li>
-                <li>ChatGPT, Gemini, CoPilot, DeepSeek, Grok</li>
-            </ul>
-            </div>
-
-            <div>
-            <h3 style="text-align: justify;">Programming</h3>
-            <ul style="list-style-position: inside; padding-left: 0; text-align: justify;">
-                <li>Solidity</li>
-                <li>JavaScript</li>
-                <li>JSON</li>
-                <li>Python</li>
-                <li>C/C++</li>
-                <li>HTML</li>
-                <li>CSS</li>
-            </ul>
+                
         </div>
-
-         <div>
-            <h3 style="text-align: justify;">Database</h3>
-            <ul style="list-style-position: inside; padding-left: 0; text-align: justify;">
-                <li>MongoDB</li>
-                <li>MySQL</li>
-                <li>SQL Server</li>
-            </ul>
-        </div>
-
-        <div>
-            <h3 style="text-align: justify;">Data Science</h3>
-            <ul style="list-style-position: inside; padding-left: 0; text-align: justify;">
-                <li>Machine Learning</li>
-                <li>LLM</li>
-                <li>Deep Learning</li>
-                <li>Computer Vision</li>
-                <li>NLP</li>
-                <li>Data Visualization</li>
-            </ul>
-        </div>
-
-        <div>
-            <h3 style="text-align: justify;">Development</h3>
-            <ul style="list-style-position: inside; padding-left: 0; text-align: justify;">
-                <li>React</li>
-                <li>NodeJS</li>
-                <li>Express</li>
-                <li>Foundry</li>
-                <li>Hardhat</li>
-                <li>Chainlink</li>
-                <li>Truffle</li>
-                <li>Vite</li>
-                <li>Bootstrap</li>
-                <li>Tailwind</li>
-                <li>Ethers.js</li>
-                <li>Web3.js</li>
-                <li>Git</li>
-                <li>Remix</li>
-                <li>Visual Studio Code</li>
-            </ul>
-        </div>
-
-        <div>
-            <h3 style="text-align: justify;">Testing</h3>
-            <ul style="list-style-position: inside; padding-left: 0; text-align: justify;">
-                <li>Postman</li>
-                <li>Thunder</li>
-                <li>CodeRunner</li>
-                <li>Chai</li>
-                <li>Waffle</li>
-                <li>Mocha</li>
-                <li>Jenkins</li>
-            </ul>
-        </div>
-
-         <div>
-            <h3 style="text-align: justify;">Collaboration</h3>
-            <ul style="list-style-position: inside; padding-left: 0; text-align: justify;">
-                <li>Slack</li>
-                <li>Confluence</li>
-                <li>Jira</li>
-                <li>Zoom</li>
-                <li>Telegram</li>
-                <li>WhatsApp</li>
-                <li>Teams</li>
-                <li>Workspace</li>
-            </ul>
-        </div>
-
-        <div>
-            <h3 style="text-align: justify;">DevOps</h3>
-            <ul style="list-style-position: inside; padding-left: 0; text-align: justify;">
-                <li>IPFS</li>
-                <li>Render</li>
-                <li>AWS</li>
-                <li>GCP</li>
-                <li>Azure</li>
-                <li>Docker</li>
-                <li>BitBucket</li>
-                <li>GitHub</li>
-            </ul>
-        </div>
-
-        <div>
-            <h3 style="text-align: justify;">Cybersecurity</h3>
-            <ul style="list-style-position: inside; padding-left: 0; text-align: justify;">
-                <li>Antivirus</li>
-                <li>IPS/IDS</li>
-                <li>PKI</li>
-                <li>TLS/SSL</li>
-                <li>Patching</li>
-                <li>Monitoring</li>
-                <li>Pentesting</li>
-                <li>Security Policies</li>
-                <li>Access Tokens</li>
-            </ul>
-        </div>
-
-        <div>
-            <h3 style="text-align: justify;">Blockchain</h3>
-            <ul style="list-style-position: inside; padding-left: 0; text-align: justify;">
-                <li>Smart Contracts</li>
-                <li>Cryptography</li>
-                <li>Consensus Mechanisms</li>
-                <li>Web3</li>
-                <li>Layer 1/Layer 2/Layer 0</li>
-                <li>Sidechain</li>
-                <li>Rollups</li>
-                <li>ERC20, ERC721, ERC1155, ERC4337</li>
-            </ul>
-        </div>
-
-        <div>
-            <h3 style="text-align: justify;">Technical Writing</h3>
-            <ul style="list-style-position: inside; padding-left: 0; text-align: justify;">
-                <li>Documentation</li>
-                <li>White paper</li>
-                <li>Yellow paper</li>
-                <li>Articles</li>
-                <li>Blogs (e.g., WordPress)</li>
-                <li>Pitch decks</li>
-                <li>Infographics</li>
-            </ul>
-        </div>
-
     </section>
 
     <!-- GitHub Section -->
@@ -529,56 +865,67 @@
         <div class="container">
             <h2>GitHub Repositories</h2>
             <div class="repos-container">
-                <!-- These would be dynamically loaded from GitHub API in a real implementation -->
                 <div class="repo-card">
                     <h3>Bitcoin Halving Simulation</h3>
                     <p>These programs compute the total Bitcoin reward sizes, and the actual total supply of bitcoins.</p>
-                    <p>Python</p>
-                    <a href="https://github.com/Play3rZer0/Bitcoin-BTC-Total-Supply-Simulator" class="repo-link" target="_blank">View on GitHub</a>
+                    <p><strong>Language:</strong> Python</p>
+                    <a href="https://github.com/Play3rZer0/Bitcoin-BTC-Total-Supply-Simulator" class="repo-link" target="_blank">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
                 </div>
                 
                 <div class="repo-card">
                     <h3>Blockchain Twitter V2</h3>
                     <p>A blockchain-based social media DApp implemented as smart contracts running on EVM.</p>
-                    <p>Solidity</p>
-                    <a href="https://github.com/Play3rZer0/BlockchainTwitterV2" class="repo-link" target="_blank">View on GitHub</a>
+                    <p><strong>Language:</strong> Solidity</p>
+                    <a href="https://github.com/Play3rZer0/BlockchainTwitterV2" class="repo-link" target="_blank">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
                 </div>
                 
                 <div class="repo-card">
                     <h3>Web Online Store</h3>
-                    <p>Implemented using the MERN stack. React frontend, MongoDB backend with Express NodeJS. </p>
-                    <p>JavaScript</p>
-                    <a href="https://github.com/Play3rZer0/MERN-Stack" class="repo-link" target="_blank">View on GitHub</a>
+                    <p>Implemented using the MERN stack. React frontend, MongoDB backend with Express NodeJS.</p>
+                    <p><strong>Language:</strong> JavaScript</p>
+                    <a href="https://github.com/Play3rZer0/MERN-Stack" class="repo-link" target="_blank">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
                 </div>
 
                 <div class="repo-card">
                     <h3>Webcam Face Detection</h3>
                     <p>Utilizing the OpenCV library and the Viola-Jones Object Detection Framework with Haar Cascade Classifiers to identify a face using a webcam.</p>
-                    <p>Python</p>
-                    <a href="https://github.com/Play3rZer0/FaceDetectWebcam" class="repo-link" target="_blank">View on GitHub</a>
+                    <p><strong>Language:</strong> Python</p>
+                    <a href="https://github.com/Play3rZer0/FaceDetectWebcam" class="repo-link" target="_blank">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
                 </div>
 
                 <div class="repo-card">
                     <h3>Face Detection</h3>
                     <p>Utilizing the OpenCV library and Haar Cascade Classifiers to identify faces in an image. Used for detecting human faces in digital images.</p>
-                    <p>Python</p>
-                    <a href="https://github.com/Play3rZer0/FaceDetection" class="repo-link" target="_blank">View on GitHub</a>
+                    <p><strong>Language:</strong> Python</p>
+                    <a href="https://github.com/Play3rZer0/FaceDetection" class="repo-link" target="_blank">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
                 </div>
 
                 <div class="repo-card">
                     <h3>Diffusion Models - Generative AI</h3>
-                    <p>A project that simulates the forward and reverse diffusion process in generative AI imaging.
-                    Contains a simulated program that demonstrates the process.</p>
-                    <p>Python</p>
-                    <a href="https://github.com/Play3rZer0/diffusion-models-ai" class="repo-link" target="_blank">View on GitHub</a>
+                    <p>A project that simulates the forward and reverse diffusion process in generative AI imaging. Contains a simulated program that demonstrates the process.</p>
+                    <p><strong>Language:</strong> Python</p>
+                    <a href="https://github.com/Play3rZer0/diffusion-models-ai" class="repo-link" target="_blank">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
                 </div>
 
                 <div class="repo-card">
                     <h3>User Registry on Blockchain</h3>
                     <p>A user registry smart contract that uses mapping and arrays to store user profile information.</p>
-                    
-                    <p>Solidity</p>
-                    <a href="https://github.com/Play3rZer0/User-Registry" class="repo-link" target="_blank">View on GitHub</a>
+                    <p><strong>Language:</strong> Solidity</p>
+                    <a href="https://github.com/Play3rZer0/User-Registry" class="repo-link" target="_blank">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
                 </div>
             </div>
         </div>
@@ -588,11 +935,11 @@
     <section id="contact">
         <div class="container">
             <h2>Get In Touch</h2>
-            <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+            <div class="contact-content">
                 <p>I'm always interested in hearing about new projects and opportunities. Feel free to reach out if you'd like to collaborate or just say hello!</p>
-                <div style="margin-top: 2rem;">
-                    <a href="mailto:vincent.tabora@gmail.com" style="display: inline-block; background-color: var(--secondary); color: white; padding: 0.8rem 1.5rem; border-radius: 4px; text-decoration: none; font-weight: 500;">Send Me an Email</a>
-                </div>
+                <a href="mailto:vincent.tabora@gmail.com" class="contact-button">
+                    <i class="fas fa-paper-plane"></i> Send Me an Email
+                </a>
             </div>
         </div>
     </section>
@@ -611,6 +958,23 @@
     </footer>
 
     <script>
+        // Hamburger menu functionality
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+        
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -622,12 +986,39 @@
             });
         });
         
-        // In a real implementation, you would fetch GitHub repos using their API
-        // fetch('https://api.github.com/users/yourusername/repos?sort=updated&per_page=6')
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         // Process and display repos
-        //     });
+        // Section animation on scroll
+        const sections = document.querySelectorAll('section');
+        
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+        
+        // Navbar background change on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(44, 62, 80, 0.95)';
+                nav.style.backdropFilter = 'blur(5px)';
+            } else {
+                nav.style.background = 'var(--primary)';
+                nav.style.backdropFilter = 'none';
+            }
+        });
     </script>
 </body>
 </html>
